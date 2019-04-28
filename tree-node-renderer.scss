@@ -4,14 +4,15 @@
   position: relative;
   text-align: left;
   min-width: 100%;
-  overflow: hidden;
+//   overflow: hidden;
+  overflow: visible;
 }
 
 .nodeContent {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 80%;
+  width: 100%;
 }
 
 .validDrop {
@@ -23,7 +24,7 @@
 }
 
 .highlight {
-  background: rgba(240, 240, 240, 0.7);
+//   background: rgba(240, 240, 240, 0.7);
   height: 100%;
   cursor: pointer;
 }

@@ -7,27 +7,37 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.updateTreeData = this.updateTreeData.bind(this);
+    this.selectNode = this.selectNode.bind(this)
+    this.expandAll = this.expandAll.bind(this);
+    this.collapseAll = this.collapseAll.bind(this);
+
     this.state = {
       searchString: '',
       searchFocusIndex: 0,
       searchFoundCount: null,
       treeData: [
-        { title: 'This is the Full Node Drag theme' },
-        { title: 'You can click anywhere on the node to drag it' },
+        { title: 'This is the Full Node Drag theme', dragDisabled: true, canDrag: false, canDrop: false, isEmpty: true, selected: false, onClick: this.selectNode, offset: 0, maxOffset: 0 },
+        { title: 'You can click anywhere on the node to drag it', isEmpty: false, selected: false, onClick: this.selectNode, offset: 0, maxOffset: 0 },
         {
           title: 'This node has dragging disabled',
           subtitle: 'Note how the hover behavior is different',
           dragDisabled: true,
+          isEmpty: false,
+          selected: false,
+          onClick: this.selectNode,
+          offset: 0,
+          maxOffset: 0
         },
-        { title: 'Chicken', children: [{ title: 'Egg' }] },
+        { title: 'Chicken', children: [{ title: 'Egg', offset: 0, maxOffset: 1 }], isEmpty: false, selected: false, onClick: this.selectNode, offset: 0, maxOffset: 0  },
       ],
     };
-    this.updateTreeData = this.updateTreeData.bind(this);
-    this.expandAll = this.expandAll.bind(this);
-    this.collapseAll = this.collapseAll.bind(this);
+    
   }
 
   updateTreeData(treeData) {
+      debugger
     this.setState({ treeData });
   }
 
@@ -38,6 +48,55 @@ class App extends Component {
         expanded,
       }),
     });
+  }
+
+  //  选中
+  selectNode(e, node) {
+    const treeData = this.state.treeData.map(item => ({...item, selected: item.title === node.title && !item.selected}))
+    this.setState({treeData})
+  }
+
+  // 处理方向键
+  handleKeyDown(e) {
+    const keyCode = e.which
+    !this.handleUpOrDown(keyCode) && this.handleLeftOrRight(keyCode)
+}
+
+  handleUpOrDown(keyCode) {
+    if (!(keyCode == 38 || keyCode == 40) ) return false
+    let previousIndex = this.state.treeData.findIndex(item => item.selected)
+    const minIndex = 0
+    const maxIndex = this.state.treeData.length - 1
+    let currentIndex = 0
+    if (keyCode == 38) {
+        // 上方向键
+        currentIndex = previousIndex !== -1 ? previousIndex - 1 : maxIndex
+    } else if (keyCode == 40) {
+        // 下方向键
+        currentIndex = previousIndex !== -1 ? previousIndex + 1 : minIndex
+    }
+    if (currentIndex > maxIndex) {
+        currentIndex = maxIndex
+    } else if (currentIndex < minIndex) {
+        currentIndex = minIndex
+    }
+    const treeData = this.state.treeData.map((item, index) => ({...item, selected: index === currentIndex}))
+    this.setState({treeData})
+    return true
+  }
+
+  handleLeftOrRight(keyCode) {
+    if (!(keyCode == 37 || keyCode == 39) ) return false
+    const offset = keyCode == 37 ? -1 : 1
+    const treeData = this.state.treeData.map((item, index) => {
+        if (!item.selected) return item
+        item.offset += offset
+        if (item.offset < 0) item.offset = 0
+        else if (item.offset > item.maxOffset) item.offset = item.maxOffset
+        return item
+    })
+    this.setState({treeData})
+    return true
   }
 
   expandAll() {
@@ -87,7 +146,7 @@ class App extends Component {
 
     return (
       <div
-        style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}
+        style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: 'white' }}
       >
         <div style={{ flex: '0 0 auto', padding: '0 15px' }}>
           <h3>Full Node Drag Theme</h3>
@@ -137,7 +196,7 @@ class App extends Component {
           </form>
         </div>
 
-        <div style={{ flex: '1 0 50%', padding: '0 0 0 15px' }}>
+        <div style={{ flex: '1 0 50%', padding: '0 0 0 15px' }} tabIndex="1" onKeyDown={this.handleKeyDown}>
           <SortableTree
             theme={CustomTheme}
             treeData={treeData}

@@ -1,14 +1,14 @@
 $row-padding: 2px;
 $hover-padding: 3px;
 .rowWrapper {
-  padding: $row-padding $row-padding $row-padding 0;
+//   padding: $row-padding $row-padding $row-padding 0;
   height: 100%;
   box-sizing: border-box;
   cursor: move;
 
   &:hover {
-    opacity: 0.7;
-    padding: $hover-padding $hover-padding $hover-padding 0;
+    // opacity: 0.7;
+    // padding: $hover-padding $hover-padding $hover-padding 0;
   }
 
   &:active {
@@ -46,7 +46,7 @@ $hover-padding: 3px;
   }
 
   &::before {
-    background-color: lightblue;
+    // background-color: lightblue;
     content: '';
     position: absolute;
     top: 0;
@@ -65,7 +65,7 @@ $hover-padding: 3px;
   @extend .rowLandingPad;
 
   &::before {
-    background-color: #e6a8ad;
+    // background-color: #e6a8ad;
   }
 }
 
@@ -88,6 +88,20 @@ $hover-padding: 3px;
   vertical-align: middle;
 }
 
+// .emptyRow {
+//     > div {
+//         border-radius: 4px;
+//         border: 1px dashed #d9d9d9;
+//     }
+// }
+
+// .rowSelected {
+//     > div {
+//         border-radius: 4px;
+//         border: 1px solid red;
+//     }
+// }
+
 .rowContents {
   @extend %rowItem;
   position: relative;
@@ -99,11 +113,18 @@ $hover-padding: 3px;
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  border-bottom: solid 1px #e6e6e6;
+//   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+//   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   &:hover {
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+    background-color: #eef4fe;
+    border-radius: 4px;
+    // transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    // box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+  }
+
+  &.rowCustomDom:hover {
+    background-color: white;
   }
 }
 
@@ -114,11 +135,32 @@ $hover-padding: 3px;
   width: 100%;
 }
 
+// .rowIndication {
+//     position: absolute;
+//     left: 0px;
+//     bottom: -10px;
+//     background-color: greenyellow;
+//     width: 10px;
+//     height: 10px;
+//     z-index: 20;
+//   }
+
 .rowToolbar {
   @extend %rowItem;
   flex: 0 1 auto;
   display: flex;
 }
+
+// .rowAddButton {
+//     position: absolute;
+//     left: 20px;
+//     top: 12px;
+//     line-height: 18px;
+//     width: 18px;
+//     height: 18px;
+//     border-radius: 9px;
+//     background-color: goldenrod;
+// }
 
 .moveHandle {
   @extend %rowItem;
@@ -129,7 +171,7 @@ $hover-padding: 3px;
     url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MiIgaGVpZ2h0PSI0MiI+PGcgc3Ryb2tlPSIjRkZGIiBzdHJva2Utd2lkdGg9IjIuOSIgPjxwYXRoIGQ9Ik0xNCAxNS43aDE0LjQiLz48cGF0aCBkPSJNMTQgMjEuNGgxNC40Ii8+PHBhdGggZD0iTTE0IDI3LjFoMTQuNCIvPjwvZz4KPC9zdmc+')
     no-repeat center;
   border: solid #aaa 1px;
-  box-shadow: 0 2px 2px -2px;
+//   box-shadow: 0 2px 2px -2px;
   cursor: move;
   border-radius: 1px;
   z-index: 1;
@@ -241,13 +283,13 @@ $hover-padding: 3px;
 
 .collapseButton {
   &:before {
-    content: "\25bc";
+    content: "\e916";
   }
 }
 
 .expandButton {
   &:before {
-    content:"\25b6";
+    content:"\e917";
   }
 }
 

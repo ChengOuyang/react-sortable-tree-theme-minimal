@@ -47,6 +47,9 @@ class MinimalThemeNodeContentRenderer extends Component {
     } = this.props;
     const nodeTitle = title || node.title;
     const nodeSubtitle = subtitle || node.subtitle;
+    const dom = node.dom
+    const hasDom = dom != null
+    const hasChildren = node.children && node.children[0]
 
     const isDraggedDescendant = draggedNode && isDescendant(draggedNode, node);
     const isLandingPadActive = !didDrop && isDragging;
@@ -55,50 +58,59 @@ class MinimalThemeNodeContentRenderer extends Component {
           styles.rowContents +
           (isSearchMatch ? ` ${styles.rowSearchMatch}` : '') +
           (isSearchFocus ? ` ${styles.rowSearchFocus}` : '') +
-          (!canDrag ? ` ${styles.rowContentsDragDisabled}` : '')
+          (!canDrag ? ` ${styles.rowContentsDragDisabled}` : '') + 
+          (hasDom ? ` ${styles.rowCustomDom}` : '')
         }
       >
-        <div className={styles.rowLabel}>
-          <span
-            className={
-              styles.rowTitle +
-              (node.subtitle ? ` ${styles.rowTitleWithSubtitle}` : '')
-            }
-          >
-            {typeof nodeTitle === 'function'
-              ? nodeTitle({
-                  node,
-                  path,
-                  treeIndex,
-                })
-              : nodeTitle}
-          </span>
-
-          {nodeSubtitle && (
-            <span className={styles.rowSubtitle}>
-              {typeof nodeSubtitle === 'function'
-                ? nodeSubtitle({
+        {hasDom && dom}
+        {
+            !hasDom &&
+            <div className={styles.rowLabel}>
+            <span
+                className={
+                styles.rowTitle +
+                (node.subtitle ? ` ${styles.rowTitleWithSubtitle}` : '')
+                }
+            >
+                {typeof nodeTitle === 'function'
+                ? nodeTitle({
                     node,
                     path,
                     treeIndex,
-                  })
-                : nodeSubtitle}
+                    })
+                : nodeTitle}
             </span>
-          )}
-        </div>
 
-        <div className={styles.rowToolbar}>
-          {buttons.map((btn, index) => (
-            <div
-              key={index} // eslint-disable-line react/no-array-index-key
-              className={styles.toolbarButton}
-            >
-              {btn}
+            {nodeSubtitle && (
+                <span className={styles.rowSubtitle}>
+                {typeof nodeSubtitle === 'function'
+                    ? nodeSubtitle({
+                        node,
+                        path,
+                        treeIndex,
+                    })
+                    : nodeSubtitle}
+                </span>
+            )}
             </div>
-          ))}
-        </div>
+        }
+
+        {
+            !hasDom &&
+            <div className={styles.rowToolbar}>
+            {buttons.map((btn, index) => (
+                <div
+                key={index} // eslint-disable-line react/no-array-index-key
+                className={styles.toolbarButton}
+                >
+                {btn}
+                </div>
+            ))}
+            </div>
+        }
       </div>
     );
+    const widthOffset = scaffoldBlockPxWidth / 45 * 52
 
     return (
       <div style={{ height: '100%' }} {...otherProps}>
@@ -124,13 +136,12 @@ class MinimalThemeNodeContentRenderer extends Component {
               {node.expanded &&
                 !isDragging && (
                   <div
-                    style={{ width: scaffoldBlockPxWidth }}
+                    style={{ width: widthOffset }}
                     className={styles.lineChildren}
                   />
                 )}
             </div>
           )}
-
         <div
           className={
             styles.rowWrapper +
@@ -146,9 +157,10 @@ class MinimalThemeNodeContentRenderer extends Component {
             }
             style={{
               opacity: isDraggedDescendant ? 0.5 : 1,
-              paddingLeft: scaffoldBlockPxWidth,
+              paddingLeft: widthOffset,
               ...style,
             }}
+            onClick={e => node.onClick && node.onClick(e, node)}
           >
             {canDrag
               ? connectDragSource(nodeContent, { dropEffect: 'copy' })
