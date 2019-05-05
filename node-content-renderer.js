@@ -48,6 +48,7 @@ class MinimalThemeNodeContentRenderer extends Component {
     const nodeTitle = title || node.title;
     const nodeSubtitle = subtitle || node.subtitle;
     const dom = node.dom
+    const selected = node.selected
     const hasDom = dom != null
     const hasChildren = node.children && node.children[0]
 
@@ -59,7 +60,8 @@ class MinimalThemeNodeContentRenderer extends Component {
           (isSearchMatch ? ` ${styles.rowSearchMatch}` : '') +
           (isSearchFocus ? ` ${styles.rowSearchFocus}` : '') +
           (!canDrag ? ` ${styles.rowContentsDragDisabled}` : '') + 
-          (hasDom ? ` ${styles.rowCustomDom}` : '')
+          (hasDom ? ` ${styles.rowCustomDom}` : '') + 
+          (selected ? ` ${styles.rowSelected}` : '')
         }
       >
         {hasDom && dom}

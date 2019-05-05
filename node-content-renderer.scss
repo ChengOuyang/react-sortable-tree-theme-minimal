@@ -95,12 +95,10 @@ $hover-padding: 3px;
 //     }
 // }
 
-// .rowSelected {
-//     > div {
-//         border-radius: 4px;
-//         border: 1px solid red;
-//     }
-// }
+.rowSelected {
+    background-color: #eef4fe;
+    border-radius: 4px;
+}
 
 .rowContents {
   @extend %rowItem;
