@@ -117,8 +117,7 @@ class MinimalThemeNodeContentRenderer extends Component {
     return (
       <div style={{ height: '100%' }} {...otherProps}>
         {toggleChildrenVisibility &&
-          node.children &&
-          (node.children.length > 0 || typeof node.children === 'function') && (
+            node.tag === 'GroupMenuNode' && (
             <div>
               <button
                 type="button"

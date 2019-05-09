@@ -468,7 +468,7 @@
                         style: {
                             height: "100%"
                         }
-                    }, otherProps), toggleChildrenVisibility && node.children && (node.children.length > 0 || "function" == typeof node.children) && _react2.default.createElement("div", null, _react2.default.createElement("button", {
+                    }, otherProps), toggleChildrenVisibility && "GroupMenuNode" === node.tag && _react2.default.createElement("div", null, _react2.default.createElement("button", {
                         type: "button",
                         "aria-label": node.expanded ? "Collapse" : "Expand",
                         className: node.expanded ? _nodeContentRenderer2.default.collapseButton : _nodeContentRenderer2.default.expandButton,
